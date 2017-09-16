@@ -47,7 +47,8 @@ namespace TrollTyper
             _converter = new Converter
                 (
                     new MitinaQuirk(),
-                    new NeswelQuirk()
+                    new NeswelQuirk(),
+                    new KadopiQuirk()
                 );
         }
 

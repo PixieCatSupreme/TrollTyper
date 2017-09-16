@@ -25,12 +25,12 @@ namespace TrollTyper
 
         }
 
-        public bool ConvertText(ref string text, bool isHtmlMode)
+        public bool ConvertText(ref string text, bool isBbcMode)
         {
             string[] lines = Regex.Split(text, nextLines);
             StringBuilder sb = new StringBuilder();
 
-            if (isHtmlMode)
+            if (isBbcMode)
             {
                 sb.Append("[spoiler open=\"Open Pesterlog\" close=\"Close Pesterlog\"][left]");
             }
@@ -43,7 +43,7 @@ namespace TrollTyper
 
                 if (TypingQuirks.TryGetValue(splitString[0], out TypingQuirk quirk))
                 {
-                    if (isHtmlMode)
+                    if (isBbcMode)
                     {
                         Color c = quirk.chatColor;
                         sb.Append(string.Format("[color=#{0}]", Utilities.ColorToHex(c)));
@@ -51,8 +51,8 @@ namespace TrollTyper
 
                     sb.Append(quirk.chatHandle);
                     sb.Append(seperator[0]);
-                    sb.Append(quirk.ApplyQuirk(splitString[1], isHtmlMode));
-                    if (isHtmlMode)
+                    sb.Append(quirk.ApplyQuirk(splitString[1], isBbcMode));
+                    if (isBbcMode)
                     {
                         sb.Append("[/color]");
                     }
@@ -70,7 +70,7 @@ namespace TrollTyper
             }
 
 
-            if (isHtmlMode)
+            if (isBbcMode)
             {
                 sb.Append("[/left][/spoiler]");
             }

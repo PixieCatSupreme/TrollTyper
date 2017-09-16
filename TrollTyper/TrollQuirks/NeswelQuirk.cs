@@ -29,7 +29,7 @@ namespace TrollTyper.TrollQuirks
                 false, true));
         }
 
-        public override string ApplyQuirk(string text, bool isHtmlMode)
+        public override string ApplyQuirk(string text, bool isBbcMode)
         {
             string[] sentences = Regex.Split(text, @"(?<=[.,;!?])");
             text = "";
@@ -45,10 +45,7 @@ namespace TrollTyper.TrollQuirks
                 }
             }
 
-            string newText = base.ApplyQuirk(text, isHtmlMode);
-
-
-            return newText;
+            return base.ApplyQuirk(text, isBbcMode);
         }
     }
 }

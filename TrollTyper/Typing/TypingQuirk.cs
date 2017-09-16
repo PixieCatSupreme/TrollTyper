@@ -21,7 +21,7 @@ namespace TrollTyper
             replacements = new List<ValueReplacement>();
         }
 
-        public virtual string ApplyQuirk(string text, bool isHtmlMode)
+        public virtual string ApplyQuirk(string text, bool isBbcMode)
         {
             for (int i = 0; i < replacements.Count; i++)
             {
