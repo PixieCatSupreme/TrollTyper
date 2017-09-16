@@ -11,13 +11,18 @@ namespace TrollTyper.TrollQuirks
         public MitinaQuirk() : base()
         {
             chatHandle = "FF";
+            chatColor = System.Drawing.Color.FromArgb(161, 0, 0);
 
-            replacements.Add(new KeyValuePair<string, string>("W", "oWo"));
-            replacements.Add(new KeyValuePair<string, string>("l", "w"));
-            replacements.Add(new KeyValuePair<string, string>("a", "aw"));
-            replacements.Add(new KeyValuePair<string, string>("r", "w"));
-            replacements.Add(new KeyValuePair<string, string>("p", "pw"));
-            replacements.Add(new KeyValuePair<string, string>("you", "u"));
+            replacements.Add(new ValueReplacement("W", "oWo", true));
+            replacements.Add(new ValueReplacement("l", "w"));
+            replacements.Add(new ValueReplacement("L", "W"));
+            replacements.Add(new ValueReplacement("a", "aw"));
+            replacements.Add(new ValueReplacement("A", "Aw"));
+            replacements.Add(new ValueReplacement("r", "w"));
+            replacements.Add(new ValueReplacement("R", "W"));
+            replacements.Add(new ValueReplacement("p", "pw"));
+            replacements.Add(new ValueReplacement("P", "Pw"));
+            replacements.Add(new ValueReplacement("you", "U", true));
         }
     }
 }

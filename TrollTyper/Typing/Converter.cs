@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using static TrollTyper.Utilities;
+
 namespace TrollTyper
 {
     class Converter
     {
-        private char[] seperator = new char[] { ':' };
-        private string nextLines = "\r\n|\r|\n";
-
         public Dictionary<string, TypingQuirk> TypingQuirks { get; set; }
 
         public Converter(params TypingQuirk[] quirks)
@@ -25,10 +25,15 @@ namespace TrollTyper
 
         }
 
-        public bool ConvertText(ref string text)
+        public bool ConvertText(ref string text, bool isHtmlMode)
         {
             string[] lines = Regex.Split(text, nextLines);
             StringBuilder sb = new StringBuilder();
+
+            if (isHtmlMode)
+            {
+                sb.Append("[spoiler open=\"Open Pesterlog\" close=\"Close Pesterlog\"][left]");
+            }
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -38,10 +43,21 @@ namespace TrollTyper
 
                 if (TypingQuirks.TryGetValue(splitString[0], out TypingQuirk quirk))
                 {
+                    if (isHtmlMode)
+                    {
+                        Color c = quirk.chatColor;
+                        sb.Append(string.Format("[color=#{0}]", Utilities.ColorToHex(c)));
+                    }
+
                     sb.Append(quirk.chatHandle);
                     sb.Append(seperator[0]);
-                    sb.Append(quirk.ApplyQuirk(splitString[1]));
-                    if (i+1 < lines.Length)
+                    sb.Append(quirk.ApplyQuirk(splitString[1], isHtmlMode));
+                    if (isHtmlMode)
+                    {
+                        sb.Append("[/color]");
+                    }
+
+                    if (i + 1 < lines.Length)
                     {
                         sb.AppendLine();
                     }
@@ -51,6 +67,12 @@ namespace TrollTyper
                     Console.WriteLine("No quirk found for character with userHandle: " + splitString[0] + "!");
                     return false;
                 }
+            }
+
+
+            if (isHtmlMode)
+            {
+                sb.Append("[/left][/spoiler]");
             }
 
             text = sb.ToString();

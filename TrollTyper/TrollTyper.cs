@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrollTyper.TrollQuirks;
+
+using static TrollTyper.Utilities;
 
 namespace TrollTyper
 {
@@ -15,89 +18,217 @@ namespace TrollTyper
         private const string textCommand = "-t";
         private const string clipBoardCommand = "-c";
         private const string helpCommand = "-h";
+        private const string bbcCommand = "-b";
+        private const string quitCommand = "-q";
 
         private readonly string _currentPath;
 
         private Converter _converter;
-        private bool _isInFileMode;
-        private bool _isInputMode;
-        private bool _isClipBoardMode;
-        private int _index;
 
-        private string[] _args;
+        private bool _isTextMode;
+        private bool _isClipBoardMode;
+        private bool _isBbcMode;
+        private bool _quit;
+
+        private List<string> _args;
         private string _currentFileName;
 
         public TrollTyper(string[] args)
         {
-            _args = args;
+            _args = args.ToList();
             _currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Output\";
             _currentFileName = "";
 
-            _isInFileMode = false;
-            _isInputMode = false;
+            _isTextMode = false;
             _isClipBoardMode = false;
+            _isBbcMode = true;
+            _quit = false;
 
             _converter = new Converter
                 (
-                    new MitinaQuirk()
+                    new MitinaQuirk(),
+                    new NeswelQuirk()
                 );
         }
 
         public bool Run()
         {
-            Console.WriteLine("Welcome to Trolltyper! The application to change your text into Homestuck style logs.\n");
+            Console.WriteLine("Welcome to Trolltyper! The application to change your text into Homestuck style logs.");
 
-            if (_args.Length > 0 && !_args.Contains(helpCommand))
+            if (_args.Count > 0 && !_args.Contains(helpCommand))
             {
+                _quit = true;
                 return ReadArguments();
             }
             else
             {
-                Console.WriteLine(string.Format(@"Just drag a files over here or write file paths to read and convert files.
-Use the {0} command IN FRONT OF text to convert that instead of a file.
-Use the {1} command IN FRONT OF all other commands to copy the output to the clipboard instead of to a file.
-Use the {2} command to open this help screen.",
-textCommand, clipBoardCommand, helpCommand));
-                return false;
+                return RepeatMode();
             }
+        }
+
+        private bool RepeatMode()
+        {
+            while (!_quit)
+            {
+                _isTextMode = false;
+                _isClipBoardMode = false;
+                _isBbcMode = true;
+
+                Console.Write("\nPlease put in your input: ");
+                SplitArguments(Console.ReadLine());
+                ReadArguments();
+            }
+
+            return true;
+        }
+
+        private void SplitArguments(string input)
+        {
+            _args.Clear();
+            List<string> parameters = new List<string>();
+
+            int qouteStart = 0;
+            bool isInqoutes = false;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '"')
+                {
+                    if (!isInqoutes)
+                    {
+                        qouteStart = i;
+                        isInqoutes = true;
+                    }
+                    else
+                    {
+                        parameters.Add(input.Substring(qouteStart + 1, i - qouteStart - 1));
+                        input = input.Remove(qouteStart - 1, i - qouteStart + 2);
+                    }
+                }
+            }
+            _args = input.Split(' ').ToList();
+            _args.AddRange(parameters);
+        }
+
+        private void WriteHelp()
+        {
+            Console.WriteLine($@"
+Just drag a files over here or write file paths to read and convert files.
+Use the {textCommand} command to convert text instead of a text from a file.
+Use the {clipBoardCommand} command to copy the output to the clipboard instead of to a file.
+Use the {bbcCommand} command to convert the text without BB code applied.
+Use the {quitCommand} command to quit this application.
+Use the {helpCommand} command to open this help screen.");
         }
 
         private bool ReadArguments()
         {
-            for (_index = 0; _index < _args.Length; _index++)
+            if (!ReadCommands())
             {
-                switch (_args[_index].ToLower())
-                {
-                    case textCommand:
-                        if (!ConvertText())
-                        {
-                            return false;
-                        }
-                        break;
-                    case clipBoardCommand:
-                        if (!SetClipboardMode())
-                        {
-                            return false;
-                        }
-                        break;
+                return false;
+            }
 
-                    default:
-                        _isInFileMode = true;
-                        if (!ConvertFromFile())
+            for (int i = 0; i < _args.Count; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(_args[i]))
+                {
+                    if (!_isTextMode)
+                    {
+                        if (!ConvertFromFile(_args[i]))
                         {
                             return false;
                         }
-                        break;
+                    }
+                    else
+                    {
+                        if (!ConvertText(_args[i]))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
             return true;
         }
 
-        private bool ConvertFromFile()
+        private bool ReadCommands()
         {
-            if (!_isInputMode)
+            bool hasError = false;
+            for (int i = _args.Count - 1; i >= 0; i--)
             {
-                string path = _args[_index];
+                string arg = _args[i].ToLower();
+                switch (arg)
+                {
+                    case textCommand:
+                        if (!_isTextMode)
+                        {
+                            _isTextMode = true;
+                            _args.RemoveAt(i);
+                        }
+                        else
+                        {
+                            hasError = true;
+                        }
+                        break;
+                    case clipBoardCommand:
+                        if (!_isClipBoardMode)
+                        {
+                            Clipboard.Clear();
+                            _isClipBoardMode = true;
+                            _args.RemoveAt(i);
+                        }
+                        else
+                        {
+                            hasError = true;
+                        }
+                        break;
+                    case helpCommand:
+                        WriteHelp();
+                        _args.Clear();
+                        return true;
+                    case quitCommand:
+                        if (!_quit)
+                        {
+                            _quit = true;
+                            _args.Clear();
+                            return true;
+                        }
+                        else
+                        {
+                            hasError = true;
+                        }
+                        break;
+                    case bbcCommand:
+                        if (!_isBbcMode)
+                        {
+                            _isBbcMode = true;
+                            _args.RemoveAt(i);
+                        }
+                        else
+                        {
+                            hasError = true;
+                        }
+                        break;
+                }
+
+                if (hasError)
+                {
+                    Console.WriteLine(string.Format("Error setting command {0}. Is this command already set?", arg));
+                    break;
+                }
+            }
+
+            return !hasError;
+        }
+
+        private bool ConvertFromFile(string path)
+        {
+            if (!_isTextMode)
+            {
                 string text = "";
                 bool result = false;
 
@@ -106,13 +237,18 @@ textCommand, clipBoardCommand, helpCommand));
                     using (StreamReader sr = File.OpenText(path))
                     {
                         text = sr.ReadToEnd();
-                        result = _converter.ConvertText(ref text);
+                        result = _converter.ConvertText(ref text, true);
                     }
                     _currentFileName = Path.GetFileNameWithoutExtension(path);
                 }
-                catch
+                catch (Exception e)
                 {
+#if DEBUG
+                    Console.WriteLine(e.Message);
+#else
                     Console.WriteLine( path + " is not a valid path!");
+#endif
+
                     return false;
                 }
 
@@ -124,32 +260,23 @@ textCommand, clipBoardCommand, helpCommand));
             }
             else
             {
-                Console.WriteLine("Already loaded text after -t command!");
+                Console.WriteLine("Can't convert from file after reading text with -t!");
                 return false;
             }
         }
 
-        private bool ConvertText()
+        private bool ConvertText(string text)
         {
-            _index++;
-            if (!_isInFileMode && !_isInputMode)
+            if (_isTextMode)
             {
-                if (_index < _args.Length)
-                {
-                    string text = _args[_index];
-                    bool result = _converter.ConvertText(ref text);
+                bool result = _converter.ConvertText(ref text, true);
 
-                    if (result)
-                    {
-                        result = Output(text);
-                    }
-                    return result;
-                }
-                else
+                if (result)
                 {
-                    Console.WriteLine("No text found after -t command!");
-                    return false;
+                    result = Output(text);
                 }
+                return result;
+
             }
             else
             {
@@ -157,30 +284,6 @@ textCommand, clipBoardCommand, helpCommand));
                 return false;
             }
         }
-
-        private bool SetClipboardMode()
-        {
-            _index++;
-            if (_index < _args.Length)
-            {
-                if (!_isClipBoardMode)
-                {
-                    _isClipBoardMode = true;
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("Unexpected command " + _args[_index] + "!");
-                    return false;
-                }
-            }
-            else
-            {
-                Console.WriteLine("No text found after -c command!\nPlace this command in front of all toehr commands to make it work!");
-                return false;
-            }
-        }
-
 
         private bool Output(string text)
         {
@@ -209,11 +312,14 @@ textCommand, clipBoardCommand, helpCommand));
 
             try
             {
-                using (StreamWriter sw = File.CreateText(sb.ToString()))
+                using (FileStream stream = new FileStream(sb.ToString(), FileMode.OpenOrCreate))
                 {
-                    sw.Write(output);
+                    using (StreamWriter sw = new StreamWriter(stream))
+                    {
+                        sw.Write(output);
+                    }
+                    Console.WriteLine("Text saved to file in: " + sb.ToString());
                 }
-                Console.WriteLine("Text saved to file in: " + sb.ToString());
             }
             catch
             {
@@ -228,7 +334,15 @@ textCommand, clipBoardCommand, helpCommand));
         {
             if (!string.IsNullOrWhiteSpace(output))
             {
-                Clipboard.SetText(output);
+                string clipBoardText = Clipboard.GetText();
+                if (!string.IsNullOrWhiteSpace(clipBoardText))
+                {
+                    Clipboard.SetText(string.Format("{0}\n{1}", clipBoardText, output));
+                }
+                else
+                {
+                    Clipboard.SetText(output);
+                }
                 Console.WriteLine("Text copied to clipboard!");
             }
             else
