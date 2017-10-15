@@ -12,9 +12,8 @@ namespace TrollTyper.TrollQuirks
 {
     class NeswelQuirk : TypingQuirk
     {
-        public NeswelQuirk() : base()
+        public NeswelQuirk() : base("demonSlayer")
         {
-            chatHandle = "DS";
             chatColor = System.Drawing.Color.FromArgb(0, 33, 203);
 
             replacements.Add(new ValueReplacement("d", "D"));

@@ -8,9 +8,8 @@ namespace TrollTyper.TrollQuirks
 {
     class KadopiQuirk : TypingQuirk
     {
-        public KadopiQuirk() : base()
+        public KadopiQuirk() : base("couchPotato")
         {
-            chatHandle = "PM";
             chatColor = System.Drawing.Color.FromArgb(0, 130, 130);
 
             replacements.Add(new ValueReplacement("m", "mmmm"));

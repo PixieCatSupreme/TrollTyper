@@ -10,13 +10,15 @@ namespace TrollTyper
 {
     public class TypingQuirk
     {
-        public string chatHandle;
+        public string ChatHandle { get; private set; }
+        public string ChatHandleShort { get; private set; }
         public Color chatColor;
         protected List<ValueReplacement> replacements;
 
-        public TypingQuirk()
+        public TypingQuirk(string chatHandle)
         {
-            chatHandle = "NULL";
+            this.ChatHandle = chatHandle;
+            ChatHandleShort = $"{Char.ToUpper(chatHandle[0])}{chatHandle.FirstOrDefault(c => char.IsUpper(c))}";
             chatColor = Color.Black;
             replacements = new List<ValueReplacement>();
         }

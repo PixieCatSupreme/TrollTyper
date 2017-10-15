@@ -8,9 +8,8 @@ namespace TrollTyper.TrollQuirks
 {
     public class MitinaQuirk : TypingQuirk
     {
-        public MitinaQuirk() : base()
+        public MitinaQuirk() : base("fierceFeline")
         {
-            chatHandle = "FF";
             chatColor = System.Drawing.Color.FromArgb(161, 0, 0);
 
             replacements.Add(new ValueReplacement("W", "oWo", true));
