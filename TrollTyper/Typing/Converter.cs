@@ -57,25 +57,28 @@ namespace TrollTyper
             for (int i = 0; i < lines.Length; i++)
             {
                 line = lines[i];
-                splitString = line.Split(seperator, 2);
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    splitString = line.Split(seperator, 2);
 
-                if (TryGetShortName(splitString[0], out TypingQuirk quirk))
-                {
-                    ConvertChatMessage(splitString[1], quirk);
-                }
-                else if (TryGetName(line.Substring(0, line.IndexOf(' ')), out quirk))
-                {
-                    ConvertStartAndEndMessage(line, quirk);
-                }
-                else
-                {
-                    Console.WriteLine("No quirk found for character with userHandle: " + splitString[0] + "!");
-                    return false;
-                }
+                    if (TryGetShortName(splitString[0], out TypingQuirk quirk))
+                    {
+                        ConvertChatMessage(splitString[1], quirk);
+                    }
+                    else if (line.Substring(0, line.IndexOf(' ')) == "--")
+                    {
+                        ConvertStartAndEndMessage(line);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No quirk found for character with userHandle: " + splitString[0] + "!");
+                        return false;
+                    }
 
-                if (i + 1 < lines.Length)
-                {
-                    _sb.AppendLine();
+                    if (i + 1 < lines.Length)
+                    {
+                        _sb.AppendLine();
+                    }
                 }
             }
 
@@ -88,15 +91,44 @@ namespace TrollTyper
             return true;
         }
 
-        private void ConvertStartAndEndMessage(string text, TypingQuirk quirk)
+        private void ConvertStartAndEndMessage(string text)
         {
             if (_isBbcMode)
             {
-                Color c = quirk.chatColor;
-                _sb.Append(string.Format("[color=#{0}]", Utilities.ColorToHex(c)));
+                string[] words = text.Split(' ');
+
+                for (int i = 0; i < words.Length; i++)
+                {
+                    TypingQuirk quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandleShort == words[i]);
+
+                    _sb.Append(' ');
+
+                    if (quirk != null)
+                    {
+                        SetChatName(quirk);
+                    }
+                    else
+                    {
+                        _sb.Append(words[i]);
+                    }
+                }
+            }
+            else
+            {
+                _sb.Append(text);
+            }
+        }
+
+        private void SetChatName(TypingQuirk quirk)
+        {
+            _sb.Append($"{quirk.ChatHandle} ");
+
+            if (_isBbcMode)
+            {
+                _sb.Append($"[color=#{ColorToHex(quirk.chatColor)}]");
             }
 
-            _sb.Append(text);
+            _sb.Append($"[{quirk.ChatHandleShort}]");
 
             if (_isBbcMode)
             {
@@ -109,7 +141,7 @@ namespace TrollTyper
             if (_isBbcMode)
             {
                 Color c = quirk.chatColor;
-                _sb.Append(string.Format("[color=#{0}]", Utilities.ColorToHex(c)));
+                _sb.Append($"[color=#{ColorToHex(quirk.chatColor)}]");
             }
 
             _sb.Append(quirk.ChatHandleShort);

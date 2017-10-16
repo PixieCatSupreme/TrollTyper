@@ -48,7 +48,8 @@ namespace TrollTyper
                 (
                     new MitinaQuirk(),
                     new NeswelQuirk(),
-                    new KadopiQuirk()
+                    new KadopiQuirk(),
+                    new BarbraQuirk()
                 );
         }
 
@@ -102,12 +103,12 @@ namespace TrollTyper
                     }
                     else
                     {
-                        parameters.Add(input.Substring(qouteStart + 1, i - qouteStart - 1));
-                        input = input.Remove(qouteStart - 1, i - qouteStart + 2);
+                        parameters.Add(input.Substring(qouteStart+1, i - qouteStart-1));
+                        input = input.Remove(qouteStart, i - qouteStart+1);
                     }
                 }
             }
-            _args = input.Split(' ').ToList();
+            _args = !string.IsNullOrWhiteSpace(input) ? input.Split(' ').ToList() : new List<string>();
             _args.AddRange(parameters);
         }
 

@@ -15,12 +15,10 @@ namespace TrollTyper.TrollQuirks
             replacements.Add(new ValueReplacement("W", "oWo", true));
             replacements.Add(new ValueReplacement("l", "w"));
             replacements.Add(new ValueReplacement("L", "W"));
-            replacements.Add(new ValueReplacement("a", "aw"));
-            replacements.Add(new ValueReplacement("A", "Aw"));
             replacements.Add(new ValueReplacement("r", "w"));
             replacements.Add(new ValueReplacement("R", "W"));
-            replacements.Add(new ValueReplacement("p", "pw"));
-            replacements.Add(new ValueReplacement("P", "Pw"));
+            replacements.Add(new ValueReplacement("n", "ny"));
+            replacements.Add(new ValueReplacement("N", "Ny"));
             replacements.Add(new ValueReplacement("you", "U", true));
         }
     }
