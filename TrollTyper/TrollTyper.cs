@@ -103,8 +103,8 @@ namespace TrollTyper
                     }
                     else
                     {
-                        parameters.Add(input.Substring(qouteStart+1, i - qouteStart-1));
-                        input = input.Remove(qouteStart, i - qouteStart+1);
+                        parameters.Add(input.Substring(qouteStart + 1, i - qouteStart - 1));
+                        input = input.Remove(qouteStart, i - qouteStart + 1);
                     }
                 }
             }
@@ -125,33 +125,35 @@ Use the {helpCommand} command to open this help screen.");
 
         private bool ReadArguments()
         {
+            _args.RemoveAll(a => string.IsNullOrWhiteSpace(a));
+
             if (!ReadCommands())
             {
                 return false;
             }
 
+            if (_args.Count == 0)
+            {
+                Console.WriteLine($"No text found to convert. Are you sure you typed something in?");
+
+                return false;
+            }
+
             for (int i = 0; i < _args.Count; i++)
             {
-                if (!string.IsNullOrWhiteSpace(_args[i]))
+                if (!_isTextMode)
                 {
-                    if (!_isTextMode)
+                    if (!ConvertFromFile(_args[i]))
                     {
-                        if (!ConvertFromFile(_args[i]))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!ConvertText(_args[i]))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
                 else
                 {
-                    return false;
+                    if (!ConvertText(_args[i]))
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -163,63 +165,66 @@ Use the {helpCommand} command to open this help screen.");
             for (int i = _args.Count - 1; i >= 0; i--)
             {
                 string arg = _args[i].ToLower();
-                switch (arg)
+                if (arg.StartsWith("-"))
                 {
-                    case textCommand:
-                        if (!_isTextMode)
-                        {
-                            _isTextMode = true;
-                            _args.RemoveAt(i);
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                        break;
-                    case clipBoardCommand:
-                        if (!_isClipBoardMode)
-                        {
-                            Clipboard.Clear();
-                            _isClipBoardMode = true;
-                            _args.RemoveAt(i);
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                        break;
-                    case helpCommand:
-                        WriteHelp();
-                        _args.Clear();
-                        return true;
-                    case quitCommand:
-                        if (!_quit)
-                        {
-                            _quit = true;
+                    switch (arg)
+                    {
+                        case textCommand:
+                            if (!_isTextMode)
+                            {
+                                _isTextMode = true;
+                                _args.RemoveAt(i);
+                            }
+                            else
+                            {
+                                hasError = true;
+                            }
+                            break;
+                        case clipBoardCommand:
+                            if (!_isClipBoardMode)
+                            {
+                                Clipboard.Clear();
+                                _isClipBoardMode = true;
+                                _args.RemoveAt(i);
+                            }
+                            else
+                            {
+                                hasError = true;
+                            }
+                            break;
+                        case helpCommand:
+                            WriteHelp();
                             _args.Clear();
                             return true;
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                        break;
-                    case bbcCommand:
-                        if (!_isBbcMode)
-                        {
-                            _isBbcMode = true;
-                            _args.RemoveAt(i);
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                        break;
+                        case quitCommand:
+                            if (!_quit)
+                            {
+                                _quit = true;
+                                _args.Clear();
+                                return true;
+                            }
+                            else
+                            {
+                                hasError = true;
+                            }
+                            break;
+                        case bbcCommand:
+                            if (_isBbcMode)
+                            {
+                                _isBbcMode = false;
+                                _args.RemoveAt(i);
+                            }
+                            else
+                            {
+                                hasError = true;
+                            }
+                            break;
+                    }
                 }
 
                 if (hasError)
                 {
-                    Console.WriteLine(string.Format("Error setting command {0}. Is this command already set?", arg));
+                    Console.WriteLine($"Error setting command {arg}. Is this command already set?");
                     break;
                 }
             }
@@ -271,7 +276,7 @@ Use the {helpCommand} command to open this help screen.");
         {
             if (_isTextMode)
             {
-                bool result = _converter.ConvertText(ref text, true);
+                bool result = _converter.ConvertText(ref text, _isBbcMode);
 
                 if (result)
                 {
@@ -339,7 +344,7 @@ Use the {helpCommand} command to open this help screen.");
                 string clipBoardText = Clipboard.GetText();
                 if (!string.IsNullOrWhiteSpace(clipBoardText))
                 {
-                    Clipboard.SetText(string.Format("{0}\n{1}", clipBoardText, output));
+                    Clipboard.SetText($"{clipBoardText}\n{output}");
                 }
                 else
                 {

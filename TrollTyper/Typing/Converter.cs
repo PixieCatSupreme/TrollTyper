@@ -65,7 +65,7 @@ namespace TrollTyper
                     {
                         ConvertChatMessage(splitString[1], quirk);
                     }
-                    else if (line.Substring(0, line.IndexOf(' ')) == "--")
+                    else if (line.StartsWith(specialMessageOpener))
                     {
                         ConvertStartAndEndMessage(line);
                     }
@@ -93,8 +93,6 @@ namespace TrollTyper
 
         private void ConvertStartAndEndMessage(string text)
         {
-            if (_isBbcMode)
-            {
                 string[] words = text.Split(' ');
 
                 for (int i = 0; i < words.Length; i++)
@@ -112,11 +110,6 @@ namespace TrollTyper
                         _sb.Append(words[i]);
                     }
                 }
-            }
-            else
-            {
-                _sb.Append(text);
-            }
         }
 
         private void SetChatName(TypingQuirk quirk)

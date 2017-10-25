@@ -9,9 +9,11 @@ namespace TrollTyper
 {
     public static class Utilities
     {
+        public const string nextLines = "\r\n|\r|\n";
+        public const string specialMessageOpener = "--";
+
         public static char[] seperator = new char[] { ':' };
         public static char[] vowels = new char[] { 'a', 'e', 'i', 'u', 'o' };
-        public static string nextLines = "\r\n|\r|\n";
 
         public static string ColorToHex(Color color)
         {
