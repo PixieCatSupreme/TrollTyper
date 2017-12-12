@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLua;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +20,13 @@ namespace TrollTyper
         private const string clipBoardCommand = "-c";
         private const string helpCommand = "-h";
         private const string bbcCommand = "-b";
+        private const string reloadCommand = "-r";
+        private const string clearCommand = "-clear";
         private const string quitCommand = "-q";
 
-        private readonly string _currentPath;
+        private readonly string _outputPath;
+        private readonly string _quirkPath;
+        private readonly string _luaSandbox;
 
         private Converter _converter;
 
@@ -29,6 +34,7 @@ namespace TrollTyper
         private bool _isClipBoardMode;
         private bool _isBbcMode;
         private bool _quit;
+        private bool _ranCommand;
 
         private List<string> _args;
         private string _currentFileName;
@@ -36,26 +42,50 @@ namespace TrollTyper
         public TrollTyper(string[] args)
         {
             _args = args.ToList();
-            _currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Output\";
+            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _outputPath = $@"{currentPath}\Output\";
+            _quirkPath = $@"{currentPath}\Quirks\";
             _currentFileName = "";
 
             _isTextMode = false;
             _isClipBoardMode = false;
             _isBbcMode = true;
             _quit = false;
+            _ranCommand = false;
 
-            _converter = new Converter
-                (
-                    new MitinaQuirk(),
-                    new NeswelQuirk(),
-                    new KadopiQuirk(),
-                    new BarbraQuirk()
-                );
+            _luaSandbox = "import ('TrollTyper', 'TrollTyper') \n import = function () end";
+
+            _converter = new Converter();
+        }
+
+        public bool LoadLua()
+        {
+            _converter.TypingQuirks.Clear();
+            List<TypingQuirk> quirks = new List<TypingQuirk>();
+
+            string[] fileNames = Directory.GetFiles(_quirkPath, "*.lua", System.IO.SearchOption.AllDirectories);
+
+            string currentPath = "";
+            for (int i = 0; i < fileNames.Length; i++)
+            {
+                currentPath = fileNames[i];
+
+                Lua lua = new Lua();
+                lua.LoadCLRPackage();
+                lua.DoString(_luaSandbox);
+                lua.DoFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Quirks\Trolls\Side1\Mitina.lua");
+                quirks.Add(new TypingQuirk(lua));
+            }
+
+            Console.WriteLine($"Loaded {quirks.Count} quirk script files.");
+            _converter.TypingQuirks = quirks;
+            return true;
         }
 
         public bool Run()
         {
-            Console.WriteLine("Welcome to Trolltyper! The application to change your text into Homestuck style logs.");
+            WriteStartText();
+            LoadLua();
 
             if (_args.Count > 0 && !_args.Contains(helpCommand))
             {
@@ -66,6 +96,11 @@ namespace TrollTyper
             {
                 return RepeatMode();
             }
+        }
+
+        private void WriteStartText()
+        {
+            Console.WriteLine("Welcome to Trolltyper! The application to change your text into Homestuck style logs.");
         }
 
         private bool RepeatMode()
@@ -116,15 +151,22 @@ namespace TrollTyper
         {
             Console.WriteLine($@"
 Just drag a files over here or write file paths to read and convert files.
+
 Use the {textCommand} command to convert text instead of a text from a file.
 Use the {clipBoardCommand} command to copy the output to the clipboard instead of to a file.
 Use the {bbcCommand} command to convert the text without BB code applied.
+
+Use the {reloadCommand} command to reload the lua files.
+Use the {clearCommand} command to clear the window.
+
 Use the {quitCommand} command to quit this application.
 Use the {helpCommand} command to open this help screen.");
         }
 
         private bool ReadArguments()
         {
+            _ranCommand = false;
+
             _args.RemoveAll(a => string.IsNullOrWhiteSpace(a));
 
             if (!ReadCommands())
@@ -132,7 +174,7 @@ Use the {helpCommand} command to open this help screen.");
                 return false;
             }
 
-            if (_args.Count == 0)
+            if (!_ranCommand && _args.Count == 0)
             {
                 Console.WriteLine($"No text found to convert. Are you sure you typed something in?");
 
@@ -165,6 +207,9 @@ Use the {helpCommand} command to open this help screen.");
             for (int i = _args.Count - 1; i >= 0; i--)
             {
                 string arg = _args[i].ToLower();
+
+                _ranCommand = true;
+
                 if (arg.StartsWith("-"))
                 {
                     switch (arg)
@@ -179,6 +224,7 @@ Use the {helpCommand} command to open this help screen.");
                             {
                                 hasError = true;
                             }
+
                             break;
                         case clipBoardCommand:
                             if (!_isClipBoardMode)
@@ -191,10 +237,12 @@ Use the {helpCommand} command to open this help screen.");
                             {
                                 hasError = true;
                             }
+
                             break;
                         case helpCommand:
                             WriteHelp();
                             _args.Clear();
+
                             return true;
                         case quitCommand:
                             if (!_quit)
@@ -207,6 +255,7 @@ Use the {helpCommand} command to open this help screen.");
                             {
                                 hasError = true;
                             }
+
                             break;
                         case bbcCommand:
                             if (_isBbcMode)
@@ -218,6 +267,22 @@ Use the {helpCommand} command to open this help screen.");
                             {
                                 hasError = true;
                             }
+
+                            break;
+                        case reloadCommand:
+                            LoadLua();
+                            _args.Clear();
+
+                            break;
+                        case clearCommand:
+                            Console.Clear();
+                            WriteStartText();
+                            _args.Clear();
+
+                            break;
+                        default:
+                            Console.WriteLine($"Unknown command {arg}. Use the {helpCommand} command to get a list of commands.");
+                            _args.Clear();
                             break;
                     }
                 }
@@ -309,7 +374,7 @@ Use the {helpCommand} command to open this help screen.");
             DateTime date = DateTime.Now;
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(_currentPath);
+            sb.Append(_outputPath);
             sb.Append(date.ToString("dd-MM-yyyy"));
 
             Directory.CreateDirectory(sb.ToString());

@@ -14,7 +14,7 @@ namespace TrollTyper.TrollQuirks
     {
         public NeswelQuirk() : base("demonSlayer")
         {
-            chatColor = System.Drawing.Color.FromArgb(0, 33, 203);
+            ChatColor = System.Drawing.Color.FromArgb(0, 33, 203);
 
             replacements.Add(new ValueReplacement("d", "D"));
             replacements.Add(new ValueReplacement("o", "O"));
@@ -24,7 +24,7 @@ namespace TrollTyper.TrollQuirks
             replacements.Add(new ValueReplacement("DOOM", 
                 String.Format("[/color][b][color=#{0}]DOOM[/color][/b][color=#{1}]", 
                 ColorToHex(Color.Black),
-                ColorToHex(chatColor)), 
+                ColorToHex(ChatColor)), 
                 false, true));
         }
 

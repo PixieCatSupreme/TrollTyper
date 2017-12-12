@@ -10,7 +10,7 @@ namespace TrollTyper.TrollQuirks
     {
         public MitinaQuirk() : base("fierceFeline")
         {
-            chatColor = System.Drawing.Color.FromArgb(161, 0, 0);
+            ChatColor = System.Drawing.Color.FromArgb(161, 0, 0);
 
             replacements.Add(new ValueReplacement("W", "oWo", true));
             replacements.Add(new ValueReplacement("l", "w"));

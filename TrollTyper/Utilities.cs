@@ -24,5 +24,14 @@ namespace TrollTyper
         {
             return vowels.Any(v => v == character);
         }
+
+        public static Color ToColor(this NLua.LuaTable table)
+        {
+            int R = Convert.ToInt32(table["R"]);
+            int G = Convert.ToInt32(table["G"]);
+            int B = Convert.ToInt32(table["B"]);
+
+            return Color.FromArgb(R, G, B);
+        }
     }
 }

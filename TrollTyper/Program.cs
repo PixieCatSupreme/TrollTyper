@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrollTyper.TrollQuirks;
 using System.Windows.Forms;
+using NLua;
 
 namespace TrollTyper
 {

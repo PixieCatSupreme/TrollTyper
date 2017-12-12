@@ -10,7 +10,7 @@ namespace TrollTyper.TrollQuirks
     {
         public KadopiQuirk() : base("couchPotato")
         {
-            chatColor = System.Drawing.Color.FromArgb(0, 130, 130);
+            ChatColor = System.Drawing.Color.FromArgb(0, 130, 130);
 
             replacements.Add(new ValueReplacement("m", "mmmm"));
             replacements.Add(new ValueReplacement("oo", "o"));

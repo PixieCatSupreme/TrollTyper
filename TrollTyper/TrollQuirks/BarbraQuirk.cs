@@ -12,7 +12,7 @@ namespace TrollTyper.TrollQuirks
 
         public BarbraQuirk() : base("cardridgeCollector")
         {
-            chatColor = System.Drawing.Color.FromArgb(7, 132, 70);
+            ChatColor = System.Drawing.Color.FromArgb(7, 132, 70);
         }
 
         public override string ApplyQuirk(string text, bool isBbcMode)

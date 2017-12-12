@@ -12,13 +12,13 @@ namespace TrollTyper
 {
     class Converter
     {
-        public TypingQuirk[] TypingQuirks { get; set; }
+        public List<TypingQuirk> TypingQuirks { get; set; }
         private StringBuilder _sb;
         private bool _isBbcMode;
 
-        public Converter(params TypingQuirk[] quirks)
+        public Converter()
         {
-            TypingQuirks = quirks;
+            TypingQuirks = new List<TypingQuirk>();
             _sb = new StringBuilder();
             _isBbcMode = false;
         }
@@ -118,7 +118,7 @@ namespace TrollTyper
 
             if (_isBbcMode)
             {
-                _sb.Append($"[color=#{ColorToHex(quirk.chatColor)}]");
+                _sb.Append($"[color=#{ColorToHex(quirk.ChatColor)}]");
             }
 
             _sb.Append($"[{quirk.ChatHandleShort}]");
@@ -133,8 +133,8 @@ namespace TrollTyper
         {
             if (_isBbcMode)
             {
-                Color c = quirk.chatColor;
-                _sb.Append($"[color=#{ColorToHex(quirk.chatColor)}]");
+                Color c = quirk.ChatColor;
+                _sb.Append($"[color=#{ColorToHex(quirk.ChatColor)}]");
             }
 
             _sb.Append(quirk.ChatHandleShort);
