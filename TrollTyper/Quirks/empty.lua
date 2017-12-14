@@ -2,22 +2,17 @@ import ('TrollTyper', 'TrollTyper')
 
 chatHandle = "testyBoi"
 
-chatColor = 
-{
-  R = 20,
-  B = 0,
-  G = 0
-}
+chatColor = Utilities.CreateColor(0, 0, 0)
 
 replacements = 
 {
-  ValueReplacement("test", "TEST")
+	ValueReplacement("test", "TEST")
 }
 
 function PreQuirk(text)
-  return text
+	return text
 end
 
 function PostQuirk(text)
-  return text
+	return text
 end

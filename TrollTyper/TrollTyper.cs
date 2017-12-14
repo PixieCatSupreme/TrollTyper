@@ -8,9 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TrollTyper.TrollQuirks;
-
-using static TrollTyper.Utilities;
 
 namespace TrollTyper
 {
@@ -53,7 +50,7 @@ namespace TrollTyper
             _quit = false;
             _ranCommand = false;
 
-            _luaSandbox = "import ('TrollTyper', 'TrollTyper') \n import = function () end";
+            _luaSandbox = "import ('TrollTyper', 'TrollTyper.Scripting') \n import = function () end";
 
             _converter = new Converter();
         }
@@ -68,13 +65,21 @@ namespace TrollTyper
             string currentPath = "";
             for (int i = 0; i < fileNames.Length; i++)
             {
-                currentPath = fileNames[i];
+                try
+                {
+                    currentPath = fileNames[i];
 
-                Lua lua = new Lua();
-                lua.LoadCLRPackage();
-                lua.DoString(_luaSandbox);
-                lua.DoFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Quirks\Trolls\Side1\Mitina.lua");
-                quirks.Add(new TypingQuirk(lua));
+                    Lua lua = new Lua();
+                    lua.LoadCLRPackage();
+                    lua.DoString(_luaSandbox);
+                    lua.DoFile(currentPath);
+                    quirks.Add(new TypingQuirk(lua));
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
 
             Console.WriteLine($"Loaded {quirks.Count} quirk script files.");

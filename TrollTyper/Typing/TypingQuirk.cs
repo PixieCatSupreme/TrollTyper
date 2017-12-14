@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using TrollTyper.Scripting;
 
 namespace TrollTyper
 {
@@ -32,7 +31,7 @@ namespace TrollTyper
         {
             ChatHandle = script.GetString("chatHandle");
             ChatHandleShort = $"{Char.ToUpper(ChatHandle[0])}{ChatHandle.FirstOrDefault(c => char.IsUpper(c))}";
-            ChatColor = script.GetTable("chatColor").ToColor();
+            ChatColor = (Color)script["chatColor"];
 
             replacements = script.GetTableDict(script.GetTable("replacements")).Select(k => k.Value as ValueReplacement).ToList();
 
@@ -40,11 +39,20 @@ namespace TrollTyper
             _postQuirk = script.GetFunction("PostQuirk");
         }
 
-        public virtual string ApplyQuirk(string text, bool isBbcMode)
+        public virtual bool ApplyQuirk(string text, bool isBbcMode, out string output)
         {
+            output = "";
             if (_preQuirk != null)
             {
-                _preQuirk.Call(text);
+                try
+                {
+                    text = _preQuirk.Call(text)[0] as string;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
             for (int i = 0; i < replacements.Count; i++)
@@ -55,31 +63,22 @@ namespace TrollTyper
 
             if (_postQuirk != null)
             {
-                return _postQuirk.Call(text)[0] as string;
+                try
+                {
+                    output = _postQuirk.Call(text)[0] as string;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
-            return text;
-        }
-
-        protected int CountWords(string text)
-        {
-            text = text.Trim();
-            int currentWordCount = 0;
-
-            for (int i = 0; i < text.Length;)
+            else
             {
-                while (i < text.Length && !char.IsWhiteSpace(text[i]))
-                {
-                    i++;
-                }
-
-                currentWordCount++;
-
-                while (i < text.Length && char.IsWhiteSpace(text[i]))
-                {
-                    i++;
-                }
+                output = text;
+                return true;
             }
-            return currentWordCount;
         }
     }
 }

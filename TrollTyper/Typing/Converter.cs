@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using static TrollTyper.Utilities;
+using static TrollTyper.Scripting.Utilities;
 
 namespace TrollTyper
 {
@@ -63,7 +63,10 @@ namespace TrollTyper
 
                     if (TryGetShortName(splitString[0], out TypingQuirk quirk))
                     {
-                        ConvertChatMessage(splitString[1], quirk);
+                        if (!ConvertChatMessage(splitString[1], quirk))
+                        {
+                            return false;
+                        }
                     }
                     else if (line.StartsWith(specialMessageOpener))
                     {
@@ -93,23 +96,23 @@ namespace TrollTyper
 
         private void ConvertStartAndEndMessage(string text)
         {
-                string[] words = text.Split(' ');
+            string[] words = text.Split(' ');
 
-                for (int i = 0; i < words.Length; i++)
+            for (int i = 0; i < words.Length; i++)
+            {
+                TypingQuirk quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandleShort == words[i]);
+
+                _sb.Append(' ');
+
+                if (quirk != null)
                 {
-                    TypingQuirk quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandleShort == words[i]);
-
-                    _sb.Append(' ');
-
-                    if (quirk != null)
-                    {
-                        SetChatName(quirk);
-                    }
-                    else
-                    {
-                        _sb.Append(words[i]);
-                    }
+                    SetChatName(quirk);
                 }
+                else
+                {
+                    _sb.Append(words[i]);
+                }
+            }
         }
 
         private void SetChatName(TypingQuirk quirk)
@@ -129,7 +132,7 @@ namespace TrollTyper
             }
         }
 
-        private void ConvertChatMessage(string text, TypingQuirk quirk)
+        private bool ConvertChatMessage(string text, TypingQuirk quirk)
         {
             if (_isBbcMode)
             {
@@ -139,11 +142,18 @@ namespace TrollTyper
 
             _sb.Append(quirk.ChatHandleShort);
             _sb.Append(seperator[0]);
-            _sb.Append(quirk.ApplyQuirk(text, _isBbcMode));
-            if (_isBbcMode)
+
+            if (quirk.ApplyQuirk(text, _isBbcMode, out text))
             {
-                _sb.Append("[/color]");
+                _sb.Append(text);
+
+                if (_isBbcMode)
+                {
+                    _sb.Append("[/color]");
+                }
+                return true;
             }
+            return false;
         }
     }
 }

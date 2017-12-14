@@ -53,22 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TrollQuirks\BarbraQuirk.cs" />
-    <Compile Include="TrollQuirks\KadopiQuirk.cs" />
     <Compile Include="Typing\Converter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrollQuirks\MitinaQuirk.cs" />
-    <Compile Include="TrollQuirks\NeswelQuirk.cs" />
     <Compile Include="TrollTyper.cs" />
     <Compile Include="Typing\TypingQuirk.cs" />
-    <Compile Include="Typing\ValueReplacement.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Scripting\ValueReplacement.cs" />
+    <Compile Include="Scripting\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Quirks\empty.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Quirks\Trolls\Side1\Kadopi.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Quirks\Trolls\Side1\Neswel.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Quirks\Trolls\Side1\Barbra.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Quirks\Trolls\Side1\Mitina.lua">
