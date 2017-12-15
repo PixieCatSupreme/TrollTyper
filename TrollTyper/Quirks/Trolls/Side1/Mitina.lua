@@ -13,11 +13,3 @@ replacements =
 	  ValueReplacement("N", "Ny"),
 	  ValueReplacement("you", "U", true)
 }
-
-function PreQuirk(text)
-	return text
-end
-
-function PostQuirk(text)
-	return text
-end

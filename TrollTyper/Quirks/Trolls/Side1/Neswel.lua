@@ -3,8 +3,6 @@ chatHandle = "demonSlayer"
 chatColor = Utilities.CreateColor(0, 33, 203)
 black = Utilities.CreateColor(0, 0, 0)
 
-WordStutterScalar = 2
-
 replacements = 
 {
 	ValueReplacement("d", "D"),

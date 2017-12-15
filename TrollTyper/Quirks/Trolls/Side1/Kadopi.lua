@@ -4,7 +4,6 @@ chatColor = Utilities.CreateColor(161, 0, 0)
 
 replacements = 
 {
-	ValueReplacement("m", "mmmm"),
 	ValueReplacement("oo", "o"),
 	ValueReplacement("ee", "e"),
 	ValueReplacement("aa", "a"),
