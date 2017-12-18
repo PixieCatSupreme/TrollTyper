@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TrollTyper.Scripting;
 
+using static TrollTyper.Scripting.Utilities;
+
 namespace TrollTyper
 {
     public class TypingQuirk
@@ -13,6 +15,7 @@ namespace TrollTyper
         public string ChatHandle { get; private set; }
         public string ChatHandleShort { get; private set; }
         public Color ChatColor { get; set; }
+        public string Name { get; set; }
 
         protected List<ValueReplacement> replacements;
 
@@ -31,6 +34,8 @@ namespace TrollTyper
         {
             ChatHandle = script.GetString("chatHandle");
             ChatHandleShort = $"{Char.ToUpper(ChatHandle[0])}{ChatHandle.FirstOrDefault(c => char.IsUpper(c))}";
+
+            Name = script.GetString("name");
             ChatColor = (Color)script["chatColor"];
 
             replacements = script.GetTableDict(script.GetTable("replacements")).Select(k => k.Value as ValueReplacement).ToList();

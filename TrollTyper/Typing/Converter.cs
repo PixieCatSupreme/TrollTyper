@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using TrollTyper.Scripting;
 using static TrollTyper.Scripting.Utilities;
 
 namespace TrollTyper
@@ -23,9 +23,9 @@ namespace TrollTyper
             _isBbcMode = false;
         }
 
-        public bool TryGetName(string chatHandle, out TypingQuirk quirk)
+        public bool TryGetName(string name, out TypingQuirk quirk)
         {
-            quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandle == chatHandle);
+            quirk = TypingQuirks.FirstOrDefault(q => q.Name == name);
 
             return quirk != null;
         }
@@ -63,7 +63,14 @@ namespace TrollTyper
 
                     if (TryGetShortName(splitString[0], out TypingQuirk quirk))
                     {
-                        if (!ConvertChatMessage(splitString[1], quirk))
+                        if (!ConvertChatMessage(splitString[1], true, quirk))
+                        {
+                            return false;
+                        }
+                    }
+                    else if (TryGetName(splitString[0], out quirk))
+                    {
+                        if (!ConvertChatMessage(splitString[1], false, quirk))
                         {
                             return false;
                         }
@@ -100,13 +107,14 @@ namespace TrollTyper
 
             for (int i = 0; i < words.Length; i++)
             {
-                TypingQuirk quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandleShort == words[i]);
+                TypingQuirk quirk = TypingQuirks.FirstOrDefault(q => q.ChatHandleShort == words[i].Trim(punctuations));
 
                 _sb.Append(' ');
 
                 if (quirk != null)
                 {
-                    SetChatName(quirk);
+                    char lastChar = words[i].Last();
+                    SetChatName(quirk, punctuations.Any(p => p == lastChar) ? new char?(lastChar) : null);
                 }
                 else
                 {
@@ -115,7 +123,7 @@ namespace TrollTyper
             }
         }
 
-        private void SetChatName(TypingQuirk quirk)
+        private void SetChatName(TypingQuirk quirk, char? punctiation)
         {
             _sb.Append($"{quirk.ChatHandle} ");
 
@@ -130,9 +138,14 @@ namespace TrollTyper
             {
                 _sb.Append("[/color]");
             }
+
+            if (punctiation != null)
+            {
+                _sb.Append(punctiation);
+            }
         }
 
-        private bool ConvertChatMessage(string text, TypingQuirk quirk)
+        private bool ConvertChatMessage(string text, bool isChatName, TypingQuirk quirk)
         {
             if (_isBbcMode)
             {
@@ -140,7 +153,7 @@ namespace TrollTyper
                 _sb.Append($"[color=#{ColorToHex(quirk.ChatColor)}]");
             }
 
-            _sb.Append(quirk.ChatHandleShort);
+            _sb.Append(isChatName ? quirk.ChatHandleShort : quirk.Name);
             _sb.Append(seperator[0]);
 
             if (quirk.ApplyQuirk(text, _isBbcMode, out text))

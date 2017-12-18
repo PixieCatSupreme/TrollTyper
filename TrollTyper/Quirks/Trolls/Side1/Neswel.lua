@@ -1,6 +1,7 @@
 chatHandle = "demonSlayer"
+name = "Neswel"
 
-chatColor = Utilities.CreateColor(0, 33, 203)
+chatColor = Utilities.CreateColor(162,82,3)
 black = Utilities.CreateColor(0, 0, 0)
 
 replacements = 

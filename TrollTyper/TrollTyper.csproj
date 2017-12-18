@@ -67,7 +67,13 @@
     <None Include="Quirks\empty.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Quirks\Trolls\Side1\Imporz.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Quirks\Trolls\Side1\Kadopi.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Quirks\Trolls\Side1\Motuwe.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Quirks\Trolls\Side1\Neswel.lua">

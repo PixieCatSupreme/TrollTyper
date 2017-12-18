@@ -1,6 +1,5 @@
-import ('TrollTyper', 'TrollTyper') 
-
 chatHandle = "testyBoi"
+name = "Test"
 
 chatColor = Utilities.CreateColor(0, 0, 0)
 

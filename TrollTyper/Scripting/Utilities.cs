@@ -11,6 +11,7 @@ namespace TrollTyper.Scripting
 
         public static char[] seperator = new char[] { ':' };
         public static char[] vowels = new char[] { 'a', 'e', 'i', 'u', 'o' };
+        public static char[] punctuations = new char[] { '.', ',', '!', '?' };
 
         public static Color CreateColor(int R, int G, int B)
         {
@@ -32,6 +33,14 @@ namespace TrollTyper.Scripting
             return Regex.Split(text, @"(?<=[.,;!?])");
         }
 
+        public static string RemovePunctuations(string text)
+        {
+            for (int i = 0; i < punctuations.Length; i++)
+            {
+                text = text.Replace($"{punctuations[i]}", "");
+            }
+            return text;
+        }
 
         public static int CountWords(string text)
         {
@@ -55,9 +64,14 @@ namespace TrollTyper.Scripting
             return currentWordCount;
         }
 
-        public static bool IsNullOrWhiteSpace(string sentence)
+        public static bool IsNullOrWhiteSpace(string text)
         {
-            return string.IsNullOrWhiteSpace(sentence);
+            return string.IsNullOrWhiteSpace(text);
+        }
+
+        public static bool IsPunctuation(string character)
+        {
+            return character.Length > 0 && punctuations.Any(p => p == character[0]);
         }
 
         public static int GetArrayLenght(object[] array)
@@ -72,7 +86,7 @@ namespace TrollTyper.Scripting
 
         public static bool IsVowel(string character)
         {
-            return vowels.Any(v => v == character[0]);
+            return character.Length > 0 && vowels.Any(v => v == character[0]);
         }
     }
 }

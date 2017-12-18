@@ -1,8 +1,14 @@
 chatHandle = "cardridgeCollector"
+name = "Barbra"
 
-chatColor = Utilities.CreateColor(161, 0, 0)
+chatColor = Utilities.CreateColor(7,132,70)
 
 WordStutterScalar = 2
+
+replacements = 
+{
+	ValueReplacement("o", "0")
+}
 
 function PreQuirk(text)
 	math.randomseed(Utilities.GetSeed(text))
