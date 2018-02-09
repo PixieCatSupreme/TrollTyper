@@ -1,11 +1,11 @@
 chatHandle = "testyBoi"
 name = "Test"
 
-chatColor = Utilities.CreateColor(0, 0, 0)
+chatColor = TT.CreateColor(0, 0, 0)
 
 replacements = 
 {
-	ValueReplacement("test", "TEST")
+	TT.CreateReplacement("test", "TEST")
 }
 
 function PreQuirk(text)

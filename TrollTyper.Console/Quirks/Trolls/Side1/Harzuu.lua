@@ -1,13 +1,13 @@
 chatHandle = "asdfA"
 name = "Harzuu"
 
-chatColor = Utilities.CreateColor(0, 0, 0)
+chatColor = Color.Black
 
 replacements = 
 {
-	ValueReplacement("why", "y?"),
-	ValueReplacement("who", "o?"),
-	ValueReplacement("where", "wer?")
+	TT.CreateReplacement("why", "y?"),
+	TT.CreateReplacement("who", "o?"),
+	TT.CreateReplacement("where", "wer?")
 }
 
 function PreQuirk(text)

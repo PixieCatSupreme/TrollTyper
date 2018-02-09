@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TrollTyper.Mobile.Views.MasterDetail.MasterDetail"
+             xmlns:local="clr-namespace:TrollTyper.Mobile.Views"
+             xmlns:md="clr-namespace:TrollTyper.Mobile.Views.MasterDetail">
+    <MasterDetailPage.Master>
+        <md:MainMenu x:Name="MasterPage" />
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <local:TranslatorPage />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

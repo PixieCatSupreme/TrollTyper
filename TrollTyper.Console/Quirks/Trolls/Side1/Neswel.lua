@@ -2,16 +2,15 @@ chatHandle = "doomedHeritic"
 name = "Neswel"
 
 chatColor = Color.Bronze
-black = Utilities.CreateColor(0, 0, 0)
 
 replacements = 
 {
-	ValueReplacement("d", "D"),
-	ValueReplacement("o", "O"),
-	ValueReplacement("m", "M"),
-	ValueReplacement("b", "d"),
-	ValueReplacement("p", "q"),
-	ValueReplacement("DOOM", "[/color][b][color=#" .. Utilities.ColorToHex(black) .. "]DOOM[/color][/b][color=#" .. Utilities.ColorToHex(chatColor) .. "]", false, true)
+	TT.CreateReplacement("d", "D"),
+	TT.CreateReplacement("o", "O"),
+	TT.CreateReplacement("m", "M"),
+	TT.CreateReplacement("b", "d"),
+	TT.CreateReplacement("p", "q"),
+	TT.CreateReplacement("DOOM", "[/color][b][color=#" .. TT.ColorToHex(Color.Black) .. "]DOOM[/color][/b][color=#" .. TT.ColorToHex(chatColor) .. "]", false, true)
 }
 
 function PreQuirk(text)

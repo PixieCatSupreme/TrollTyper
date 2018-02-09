@@ -1,5 +1,5 @@
 ﻿using System;
-
+using TrollTyper.Mobile.Views.MasterDetail;
 using Xamarin.Forms;
 
 namespace TrollTyper.Mobile
@@ -10,10 +10,15 @@ namespace TrollTyper.Mobile
         {
             InitializeComponent();
 
-            if (Device.RuntimePlatform == Device.iOS)
-                MainPage = new MainPage();
-            else
-                MainPage = new NavigationPage(new MainPage());
+
+            var logger = Common.Logging.LogManager.GetLogger<App>();
+
+            var logManager = new Common.Logging.LogManager();
+
+
+            //Quirks.Logging.Logger.Initialize(logManager);
+
+            MainPage = new MasterDetail();
         }
     }
 }

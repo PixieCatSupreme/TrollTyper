@@ -7,8 +7,8 @@ WordStutterScalar = 2
 
 replacements = 
 {
-	ValueReplacement("o", "0"),
-	ValueReplacement("l", "1")
+	TT.CreateReplacement("o", "0"),
+	TT.CreateReplacement("l", "1")
 }
 
 function PreQuirk(text)

@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>TrollTyper</RootNamespace>
     <AssemblyName>TrollTyper</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -36,6 +36,15 @@
     <ApplicationIcon>Resources\trollian_256px.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.NLog4412, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.NLog4412.3.4.1\lib\net40\Common.Logging.NLog4412.dll</HintPath>
+    </Reference>
     <Reference Include="KeraLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=04d04586786c6f34, processorArchitecture=MSIL">
       <HintPath>..\packages\NLua.1.3.2.1\lib\net45\KeraLua.dll</HintPath>
     </Reference>
@@ -64,8 +73,12 @@
     <Compile Include="TrollTyper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Quirks\empty.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -113,9 +126,9 @@
     <Content Include="Resources\trollian_256px.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuirkLibrary\TrollTyper.UWP.Quirks\TrollTyper.UWP.Quirks.csproj">
-      <Project>{78BE4B75-7325-4F98-A904-286E909DB2B5}</Project>
-      <Name>TrollTyper.UWP.Quirks</Name>
+    <ProjectReference Include="..\TrollTyper.Quirks\TrollTyper.Quirks.csproj">
+      <Project>{33dcaf0e-9bd7-4109-a5bd-03757a06beaf}</Project>
+      <Name>TrollTyper.Quirks</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

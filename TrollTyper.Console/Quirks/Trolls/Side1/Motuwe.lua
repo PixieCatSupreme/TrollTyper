@@ -5,15 +5,15 @@ chatColor = Color.Teal
 
 replacements = 
 {
-	ValueReplacement("ie", "y"),
-	ValueReplacement("ei", "y"),
-	ValueReplacement("oo", ":"),
-	ValueReplacement("ee", ":"),
-	ValueReplacement("aa", ":"),
-	ValueReplacement("uu", ":"),
-	ValueReplacement("o", "."),
-	ValueReplacement("e", "."),
-	ValueReplacement("a", "."),
-	ValueReplacement("u", "."),
-	ValueReplacement("ck", "c")
+	TT.CreateReplacement("ie", "y"),
+	TT.CreateReplacement("ei", "y"),
+	TT.CreateReplacement("oo", ":"),
+	TT.CreateReplacement("ee", ":"),
+	TT.CreateReplacement("aa", ":"),
+	TT.CreateReplacement("uu", ":"),
+	TT.CreateReplacement("o", "."),
+	TT.CreateReplacement("e", "."),
+	TT.CreateReplacement("a", "."),
+	TT.CreateReplacement("u", "."),
+	TT.CreateReplacement("ck", "c")
 }

@@ -1,0 +1,14 @@
+-- HA began testing with CC, CH, TH and TT --
+CC: The quick brown fox jumps over the lazy dog. Test testing test!
+CH: The quick brown fox jumps over the lazy dog. Test testing test!
+CT: The quick brown fox jumps over the lazy dog. Test testing test!
+HC: The quick brown fox jumps over the lazy dog. Test testing test!
+DH: The quick brown fox jumps over the lazy dog. Test testing test!
+HA: The quick brown fox jumps over the lazy dog. Test testing test!
+AC: The quick brown fox jumps over the lazy dog. Test testing test!
+AH: The quick brown fox jumps over the lazy dog. Test testing test!
+AA: The quick brown fox jumps over the lazy dog. Test testing test!
+TC: The quick brown fox jumps over the lazy dog. Test testing test!
+TH: The quick brown fox jumps over the lazy dog. Test testing test!
+TT: The quick brown fox jumps over the lazy dog. Test testing test!
+-- DH is a gay baby --

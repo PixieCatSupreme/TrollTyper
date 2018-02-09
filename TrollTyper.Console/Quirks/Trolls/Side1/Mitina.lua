@@ -5,14 +5,14 @@ chatColor = Color.Burgundy
 
 replacements = 
 {
-	  ValueReplacement("W", "oWo", true),
-	  ValueReplacement("l", "w"),
-	  ValueReplacement("L", "W"),
-	  ValueReplacement("r", "w"),
-	  ValueReplacement("R", "W"),
-	  ValueReplacement("n", "ny"),
-	  ValueReplacement("N", "Ny"),
-	  ValueReplacement("you", "U", true)
+	  TT.CreateReplacement("W", "oWo", true),
+	  TT.CreateReplacement("l", "w"),
+	  TT.CreateReplacement("L", "W"),
+	  TT.CreateReplacement("r", "w"),
+	  TT.CreateReplacement("R", "W"),
+	  TT.CreateReplacement("n", "ny"),
+	  TT.CreateReplacement("N", "Ny"),
+	  TT.CreateReplacement("you", "U", true)
 }
 
 function PostQuirk(text)

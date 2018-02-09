@@ -1,11 +1,11 @@
 chatHandle = "consiousTyranity"
 name = "Sher"
 
-chatColor = Utilities.CreateColor(124, 124, 255)
+chatColor = TT.CreateColor(124, 124, 255)
 
 replacements = 
 {
-	ValueReplacement("test", "TEST")
+	TT.CreateReplacement("test", "TEST")
 }
 
 function PreQuirk(text)

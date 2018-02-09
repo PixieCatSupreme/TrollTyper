@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrollTyper.Quirks.Logging;
 using TrollTyper.Quirks.Typing;
 
 namespace TrollTyper.UWP
@@ -24,7 +25,6 @@ namespace TrollTyper.UWP
 
         private readonly string _outputPath;
         private readonly string _quirkPath;
-        private readonly string _luaSandbox;
 
         private Converter _converter;
 
@@ -51,8 +51,6 @@ namespace TrollTyper.UWP
             _quit = false;
             _ranCommand = false;
 
-            _luaSandbox = "import ('TrollTyper.UWP.Quirks', 'TrollTyper.Quirks.Scripting') \n import = function () end";
-
             _converter = new Converter();
         }
 
@@ -61,29 +59,22 @@ namespace TrollTyper.UWP
             _converter.TypingQuirks.Clear();
             List<TypingQuirk> quirks = new List<TypingQuirk>();
 
-            string[] fileNames = Directory.GetFiles(_quirkPath, "*.lua", System.IO.SearchOption.AllDirectories);
+            string[] fileNames = Directory.GetFiles(_quirkPath, "*.lua", SearchOption.AllDirectories);
 
             string currentPath = "";
             for (int i = 0; i < fileNames.Length; i++)
             {
-                try
-                {
-                    currentPath = fileNames[i];
+                currentPath = fileNames[i];
 
-                    Lua lua = new Lua();
-                    lua.LoadCLRPackage();
-                    lua.DoString(_luaSandbox);
-                    lua.DoFile(currentPath);
-                    quirks.Add(new TypingQuirk(lua));
+                TypingQuirk quirk = QuirkLoader.LoadQuirk(File.ReadAllText(currentPath));
 
-                }
-                catch (Exception ex)
+                if (quirk != null)
                 {
-                    Console.WriteLine(ex.Message);
+                    quirks.Add(quirk);
                 }
             }
 
-            Console.WriteLine($"Loaded {quirks.Count} quirk script files.");
+            Logger.WriteInfo($"Loaded {quirks.Count} quirk script files.");
             _converter.TypingQuirks = quirks;
             return true;
         }
@@ -287,7 +278,7 @@ Use the {helpCommand} command to open this help screen.");
 
                             break;
                         default:
-                            Console.WriteLine($"Unknown command {arg}. Use the {helpCommand} command to get a list of commands.");
+                            Logger.WriteWarn($"Unknown command {arg}. Use the {helpCommand} command to get a list of commands.");
                             _args.Clear();
                             break;
                     }
@@ -295,7 +286,7 @@ Use the {helpCommand} command to open this help screen.");
 
                 if (hasError)
                 {
-                    Console.WriteLine($"Error setting command {arg}. Is this command already set?");
+                    Logger.WriteWarn($"Error setting command {arg}. Is this command already set?");
                     break;
                 }
             }
@@ -322,9 +313,9 @@ Use the {helpCommand} command to open this help screen.");
                 catch (Exception e)
                 {
 #if DEBUG
-                    Console.WriteLine(e.Message);
+                    Logger.WriteException(e);
 #else
-                    Console.WriteLine( path + " is not a valid path!");
+                    Logger.WriteError( path + " is not a valid path!");
 #endif
 
                     return false;
@@ -396,12 +387,12 @@ Use the {helpCommand} command to open this help screen.");
                     {
                         sw.Write(output);
                     }
-                    Console.WriteLine("Text saved to file in: " + sb.ToString());
+                    Logger.WriteInfo("Text saved to file in: " + sb.ToString());
                 }
             }
             catch
             {
-                Console.WriteLine("Unable to save file to: " + sb.ToString());
+                Logger.WriteError("Unable to save file to: " + sb.ToString());
                 return false;
             }
 

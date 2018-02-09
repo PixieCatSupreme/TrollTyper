@@ -1,11 +1,11 @@
 chatHandle = "channelingConstruction"
 name = "Mark"
 
-chatColor = Utilities.CreateColor(75, 200, 48)
+chatColor = TT.CreateColor(75, 200, 48)
 
 replacements = 
 {
-	ValueReplacement("test", "TEST")
+	TT.CreateReplacement("test", "TEST")
 }
 
 function PreQuirk(text)

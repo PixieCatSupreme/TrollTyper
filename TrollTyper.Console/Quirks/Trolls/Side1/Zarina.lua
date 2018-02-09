@@ -5,6 +5,6 @@ chatColor = Color.Fuchsia
 
 replacements = 
 {
-	ValueReplacement("w", "www"),
-	ValueReplacement("W", "WwW"),
+	TT.CreateReplacement("w", "www"),
+	TT.CreateReplacement("W", "WwW"),
 }

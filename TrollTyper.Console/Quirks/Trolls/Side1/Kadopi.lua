@@ -5,13 +5,13 @@ chatColor = Color.Yellow
 
 replacements = 
 {
-	ValueReplacement("s", "2"),
-	ValueReplacement("i", "1"),
-	ValueReplacement("a", "4"),
-	ValueReplacement("t", "7"),
-	ValueReplacement("b", "8"),
-	ValueReplacement("e", "3"),
-	ValueReplacement("g", "6"),
+	TT.CreateReplacement("s", "2"),
+	TT.CreateReplacement("i", "1"),
+	TT.CreateReplacement("a", "4"),
+	TT.CreateReplacement("t", "7"),
+	TT.CreateReplacement("b", "8"),
+	TT.CreateReplacement("e", "3"),
+	TT.CreateReplacement("g", "6"),
 }
 
 function PreQuirk(text)
