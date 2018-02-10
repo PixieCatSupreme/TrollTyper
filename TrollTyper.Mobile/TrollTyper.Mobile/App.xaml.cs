@@ -1,4 +1,5 @@
 ﻿using System;
+using TrollTyper.Mobile.ViewModels;
 using TrollTyper.Mobile.Views.MasterDetail;
 using Xamarin.Forms;
 
@@ -13,12 +14,11 @@ namespace TrollTyper.Mobile
 
             var logger = Common.Logging.LogManager.GetLogger<App>();
 
-            var logManager = new Common.Logging.LogManager();
-
-
-            //Quirks.Logging.Logger.Initialize(logManager);
+            Quirks.Logging.Logger.Initialize(logger);
 
             MainPage = new MasterDetail();
+
+            QuirkViewModel.ViewModel.LoadQuirksCommand.Execute(null);
         }
     }
 }

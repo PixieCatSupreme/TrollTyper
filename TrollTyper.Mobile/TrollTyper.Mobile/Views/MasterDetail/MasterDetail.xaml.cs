@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrollTyper.Mobile.Models;
+using TrollTyper.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,6 +13,7 @@ namespace TrollTyper.Mobile.Views.MasterDetail
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MasterDetail : MasterDetailPage
     {
+        QuirkViewModel viewModel;
         public MasterDetail()
         {
             InitializeComponent();

@@ -17,23 +17,13 @@ namespace TrollTyper.Mobile.Views
         public QuirkPage ()
 		{
 			InitializeComponent ();
-            viewModel = new QuirkViewModel();
+            viewModel = QuirkViewModel.ViewModel;
             BindingContext = viewModel;
         }
 
         private async void AddQuirkClicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new EditQuirkPage()));
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Quirks.Count == 0)
-            {
-                viewModel.LoadQuirksCommand.Execute(null);
-            }
         }
 
         protected void OnItemSelected()
