@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using MoonSharp.Interpreter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,14 +44,21 @@ namespace TrollTyper.Quirks.Logging
 
         public static void WriteException(Exception exception, [CallerMemberName] string member = "", [CallerLineNumber] int line = -1)
         {
+            if (exception is ScriptRuntimeException scriptEx)
+            {
+                WriteEventlog(scriptEx.DecoratedMessage, LogType.Error, false, member, line);
+            }
+            else
+            {
 #if DEBUG
-            WriteEventlog(exception.ToString(), LogType.Error, false, member, line);
+                WriteEventlog(exception.ToString(), LogType.Error, false, member, line);
 #else
-            WriteEventlog(exception.Message, LogType.Error, false);
+                WriteEventlog(exception.Message, LogType.Error, false);
 #endif
+            }
         }
 
-        private static void WriteEventlog(string message, LogType logType, bool showMethodInfo, string member = "", int line = -1 )
+        private static void WriteEventlog(string message, LogType logType, bool showMethodInfo, string member = "", int line = -1)
         {
 #if DEBUG
             if (showMethodInfo)

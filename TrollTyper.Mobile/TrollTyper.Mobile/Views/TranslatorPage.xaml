@@ -3,10 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TrollTyper.Mobile.Views.TranslatorPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid BackgroundColor="#91bbff" Grid.Row="0" Grid.ColumnSpan="2">
+                <Label Text="Settings" FontSize="Medium" Font="Bold"/>
+            </Grid>
+            <Label Text="Quirk" Grid.Row="1"/>
+            <Picker Grid.Row="1" Grid.Column="1"/>
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
+                <Label Text="BBCode mode"/>
+                <Switch IsToggled="{Binding IsBbcMode}"/>
+            </StackLayout>
+            <Grid BackgroundColor="#91bbff" Grid.Row="3" Grid.ColumnSpan="2">
+                <Label Text="Input" FontSize="Medium" Font="Bold"/>
+            </Grid>
+            <Editor Text="{Binding Input}" Grid.Row="4"  Grid.ColumnSpan="2"/>
+            <Button Text="Convert" HorizontalOptions="End" Grid.Row="5" Grid.Column="1" Command="{Binding ApplyQuirksCommand}"/>
+            <Grid BackgroundColor="#91bbff" Grid.Row="6" Grid.ColumnSpan="2">
+                <Label Text="Output" FontSize="Medium" Font="Bold"/>
+            </Grid>
+            <Editor Text="{Binding Output}" Grid.Row="7" Grid.ColumnSpan="2"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

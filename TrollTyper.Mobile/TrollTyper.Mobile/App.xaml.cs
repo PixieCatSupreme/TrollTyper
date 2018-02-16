@@ -15,9 +15,6 @@ namespace TrollTyper.Mobile
 
             var logManager = new Common.Logging.LogManager();
 
-
-            //Quirks.Logging.Logger.Initialize(logManager);
-
             MainPage = new MasterDetail();
         }
     }

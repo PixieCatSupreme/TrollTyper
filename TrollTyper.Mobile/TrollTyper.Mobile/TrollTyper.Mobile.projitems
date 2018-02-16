@@ -15,7 +15,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\QuirkManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TranslatorViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\QuirkViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditQuirkPage.xaml.cs">
       <DependentUpon>EditQuirkPage.xaml</DependentUpon>

@@ -10,8 +10,6 @@ namespace TrollTyper.Quirks.Typing
 {
     public static class QuirkLoader
     {
-        private static readonly string  _luaSandbox = "import ('TrollTyper.Quirks', 'TrollTyper.Quirks.Scripting') \n import = function () end";
-
         public static TypingQuirk LoadQuirk(string luaData)
         {
             try
