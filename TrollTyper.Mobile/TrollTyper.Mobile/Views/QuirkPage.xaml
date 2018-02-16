@@ -8,12 +8,12 @@
     <ContentPage.Content>
         <StackLayout>
             <ListView x:Name="ItemsListView" 
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding Quirks}"
                 VerticalOptions="FillAndExpand"
                  HasUnevenRows="true"
                  RefreshCommand="{Binding LoadQuirksCommand}"
                  IsPullToRefreshEnabled="true"
-                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                 IsRefreshing="{Binding IsBusy}"
                  CachingStrategy="RecycleElement"
                  ItemSelected="OnItemSelected">
                 <ListView.ItemTemplate>
@@ -22,11 +22,10 @@
                             <StackLayout Padding="10">
                                 <Label Text="{Binding FullHandle}" 
                        LineBreakMode="NoWrap" 
-                       Style="{DynamicResource ListItemTextStyle}" 
+                       Font="Bold,20"
                        FontSize="16" />
                                 <Label Text="{Binding Name}" 
                        LineBreakMode="NoWrap"
-                       Style="{DynamicResource ListItemDetailTextStyle}"
                        FontSize="13" />
                             </StackLayout>
                         </ViewCell>
