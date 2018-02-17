@@ -50,7 +50,7 @@
                     <Label Text="Output" Font="Bold, 16" Margin="5"/>
                 </Grid>
                 <Editor Text="{Binding Output}" Grid.Row="8" Grid.ColumnSpan="2"/>
-                <Button Text="Copy to clipboard" HorizontalOptions="End" Grid.Row="9" Grid.Column="1" Command="{Binding SaveToClipboardCommand}" IsEnabled="{Binding HasOutput}"/>
+                <!--<Button Text="Copy to clipboard" HorizontalOptions="End" Grid.Row="9" Grid.Column="1" Command="{Binding SaveToClipboardCommand}" IsEnabled="{Binding HasOutput}"/>-->
             </Grid>
         </ScrollView>
     </ContentPage.Content>
