@@ -13,7 +13,6 @@ namespace TrollTyper.Mobile.Views.MasterDetail
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MasterDetail : MasterDetailPage
     {
-        QuirkViewModel viewModel;
         public MasterDetail()
         {
             InitializeComponent();

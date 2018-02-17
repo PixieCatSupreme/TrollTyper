@@ -44,17 +44,20 @@ namespace TrollTyper.Quirks.Typing
         public TypingQuirk(Script script)
         {
             _script = script;
-            ChatHandle = script.Globals.Get("chatHandle").String;
+            ChatHandle = _script.Globals.Get("chatHandle").String;
             ChatHandleShort = $"{Char.ToUpper(ChatHandle[0])}{GetFirstCapitalized(ChatHandle)}";
 
-            Name = script.Globals.Get("name").String;
-            ChatColor = (Color)script.Globals.Get("chatColor").ToObject();
+            Name = _script.Globals.Get("name").String;
+            ChatColor = (Color)_script.Globals.Get("chatColor").ToObject();
 
-            //replacements = script.Globals.Get().ToList();
-            replacements = TableToList(script.Globals.Get("replacements").Table);
+            replacements = TableToList(_script.Globals.Get("replacements").Table);
 
-            _preQuirk = script.Globals.Get("PreQuirk");
-            _postQuirk = script.Globals.Get("PostQuirk");
+            DynValue preQuirk = _script.Globals.Get("PreQuirk");
+
+            DynValue postQuirk = _script.Globals.Get("PostQuirk");
+
+            _preQuirk = preQuirk.Type != DataType.Nil ? preQuirk : null;
+            _postQuirk = postQuirk.Type != DataType.Nil ? postQuirk : null;
         }
 
         private List<ValueReplacement> TableToList(Table table)

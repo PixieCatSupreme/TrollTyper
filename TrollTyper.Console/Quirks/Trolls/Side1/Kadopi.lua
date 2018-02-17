@@ -15,12 +15,12 @@ replacements =
 }
 
 function PreQuirk(text)
-	words = Utilities.SplitWords(text);
-	sentenceLenght = Utilities.GetArrayLenght(words) 
+	words = TT.SplitWords(text);
+	sentenceLenght = TT.GetArrayLenght(words) 
 	
 	text = ""
 	
-	for i = 0, sentenceLenght -1, 1 do
+	for i = 1, sentenceLenght, 1 do
 	    word = words[i]
 		text = text .. " " .. string.upper(string.sub(word, 1, 1)) .. string.sub(word, 2, string.len(word))
 	end

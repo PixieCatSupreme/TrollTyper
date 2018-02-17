@@ -1,6 +1,7 @@
 ﻿using MoonSharp.Interpreter;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using TrollTyper.Quirks.Logging;
 using TrollTyper.Quirks.Scripting;
@@ -8,8 +9,15 @@ using TrollTyper.Quirks.Typing;
 
 namespace TrollTyper.Quirks.Typing
 {
-    public static class QuirkLoader
+    public static class QuirkManager
     {
+        public static ObservableCollection<TypingQuirk> TypingQuirks { get; set; }
+
+        static QuirkManager()
+        {
+            TypingQuirks = new ObservableCollection<TypingQuirk>();
+        }
+
         public static TypingQuirk LoadQuirk(string luaData)
         {
             try

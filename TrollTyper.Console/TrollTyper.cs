@@ -1,6 +1,7 @@
 ﻿using NLua;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,7 +57,7 @@ namespace TrollTyper.UWP
 
         public bool LoadLua()
         {
-            _converter.TypingQuirks.Clear();
+            QuirkManager.TypingQuirks.Clear();
             List<TypingQuirk> quirks = new List<TypingQuirk>();
 
             string[] fileNames = Directory.GetFiles(_quirkPath, "*.lua", SearchOption.AllDirectories);
@@ -66,7 +67,7 @@ namespace TrollTyper.UWP
             {
                 currentPath = fileNames[i];
 
-                TypingQuirk quirk = QuirkLoader.LoadQuirk(File.ReadAllText(currentPath));
+                TypingQuirk quirk = QuirkManager.LoadQuirk(File.ReadAllText(currentPath));
 
                 if (quirk != null)
                 {
@@ -75,7 +76,7 @@ namespace TrollTyper.UWP
             }
 
             Logger.WriteInfo($"Loaded {quirks.Count} quirk script files.");
-            _converter.TypingQuirks = quirks;
+            QuirkManager.TypingQuirks = new ObservableCollection<TypingQuirk>(quirks);
             return true;
         }
 

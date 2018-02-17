@@ -12,13 +12,13 @@ replacements =
 }
 
 function PreQuirk(text)
-	math.randomseed(Utilities.GetSeed(text))
+	math.randomseed(TT.GetSeed(text))
 	
-	words = Utilities.SplitWords(text);
-	sentenceLenght = Utilities.GetArrayLenght(words) 
+	words = TT.SplitWords(text);
+	sentenceLenght = TT.GetArrayLenght(words) 
 	
-	for i = 0, sentenceLenght / WordStutterScalar, 1 do
-	    wordIndex = math.random(0, sentenceLenght-1)
+	for i = 1, sentenceLenght / WordStutterScalar +1, 1 do
+	    wordIndex = math.random(1, sentenceLenght)
 	    word = words[wordIndex]
 	
 	    stutter =  string.sub(word, 1, 1) .. VowelStutter(word)
@@ -27,7 +27,7 @@ function PreQuirk(text)
 	
 	text = "";
 	
-	for i = 0, sentenceLenght-1, 1 do
+	for i = 1, sentenceLenght, 1 do
 	    text = text.. " " .. words[i]
 	end
 
@@ -35,7 +35,7 @@ function PreQuirk(text)
 end
 
 function VowelStutter(word)
-	if string.len(word) > 1 and Utilities.IsVowel(string.sub(word, 1, 1)) then
+	if string.len(word) > 1 and TT.IsVowel(string.sub(word, 1, 1)) then
 		return string.sub(word, 1, 1)
 	end
 	return ""

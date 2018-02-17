@@ -14,16 +14,16 @@ replacements =
 }
 
 function PreQuirk(text)
-	sentences = Utilities.SplitSentences(text);
+	sentences = TT.SplitSentences(text);
 
 	text = "";
 
-	sentencesLenght = Utilities.GetArrayLenght(sentences) 
+	sentencesLenght = TT.GetArrayLenght(sentences) 
 	
-	for i = 0, sentencesLenght-1 , 1 do
+	for i = 1, sentenceLenght, 1 do
 	    sentence = sentences[i];
-	    if not Utilities.IsNullOrWhiteSpace(sentence) then
-	        words = Utilities.CountWords(sentence);
+	    if not TT.IsNullOrWhiteSpace(sentence) then
+	        words = TT.CountWords(sentence);
 	
 	        text = text .. sentence .. AddPunctuations(string.sub(sentence, -1), words - 1);
 		end
@@ -34,7 +34,7 @@ end
 function AddPunctuations(punctuation, count)
 	output = ""
 
-	for i = 0, count-1, 1 do
+	for i = 1, count, 1 do
 		output = output .. punctuation
 	end
 

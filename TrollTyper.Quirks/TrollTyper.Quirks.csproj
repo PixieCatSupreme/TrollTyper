@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{33DCAF0E-9BD7-4109-A5BD-03757A06BEAF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ClassLibrary1</RootNamespace>
-    <AssemblyName>ClassLibrary1</AssemblyName>
+    <RootNamespace>TrollTyper.Quirks</RootNamespace>
+    <AssemblyName>TrollTyper.Quirks</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,7 +39,8 @@
     <Compile Include="Scripting\Utilities.cs" />
     <Compile Include="Scripting\ValueReplacement.cs" />
     <Compile Include="Typing\Converter.cs" />
-    <Compile Include="Typing\QuirkLoader.cs" />
+    <Compile Include="Typing\QuirkManager.cs" />
+    <Compile Include="Typing\ShowNameMode.cs" />
     <Compile Include="Typing\TypingQuirk.cs" />
   </ItemGroup>
   <ItemGroup>

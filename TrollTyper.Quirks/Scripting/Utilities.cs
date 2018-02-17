@@ -29,7 +29,8 @@ namespace TrollTyper.Quirks.Scripting
 
         public static string[] SplitWords(string text)
         {
-            return text.Substring(1).Split(' ');
+            var test = text.Substring(0).Split(' ');
+            return text.Substring(0).Split(' ');
         }
 
         public static string[] SplitSentences(string text)

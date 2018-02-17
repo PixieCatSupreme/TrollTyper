@@ -1,4 +1,5 @@
 ﻿using System;
+using TrollTyper.Mobile.Models;
 using TrollTyper.Mobile.ViewModels;
 using TrollTyper.Mobile.Views.MasterDetail;
 using Xamarin.Forms;
@@ -18,7 +19,7 @@ namespace TrollTyper.Mobile
 
             MainPage = new MasterDetail();
 
-            QuirkViewModel.ViewModel.LoadQuirksCommand.Execute(null);
+            QuirkManager.LoadQuirks();
         }
     }
 }

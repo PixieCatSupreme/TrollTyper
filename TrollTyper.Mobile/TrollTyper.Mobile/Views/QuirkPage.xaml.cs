@@ -17,7 +17,7 @@ namespace TrollTyper.Mobile.Views
         public QuirkPage ()
 		{
 			InitializeComponent ();
-            viewModel = QuirkViewModel.ViewModel;
+            viewModel = new QuirkViewModel();
             BindingContext = viewModel;
         }
 
