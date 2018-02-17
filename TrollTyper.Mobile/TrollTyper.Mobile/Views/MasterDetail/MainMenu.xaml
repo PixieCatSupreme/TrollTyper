@@ -23,7 +23,7 @@
                     <Label
               Grid.Column="1"
               Grid.Row="1"
-              Text="AppName"
+              Text="Troll typer"
               Style="{DynamicResource SubtitleStyle}"/>
                 </Grid>
             </ListView.Header>
